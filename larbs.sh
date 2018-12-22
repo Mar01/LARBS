@@ -20,8 +20,9 @@ while getopts ":a:r:p:h" o; do case "${o}" in
 esac done
 
 # DEFAULTS:
-[ -z ${dotfilesrepo+x} ] && dotfilesrepo="https://github.com/lukesmithxyz/voidrice.git"
-[ -z ${progsfile+x} ] && progsfile="https://raw.githubusercontent.com/LukeSmithxyz/LARBS/master/progs.csv"
+# gotta make me rice repo
+#[ -z ${dotfilesrepo+x} ] && dotfilesrepo="https://github.com/lukesmithxyz/voidrice.git"
+[ -z ${progsfile+x} ] && progsfile="https://raw.githubusercontent.com/Mar01/MARBS/master/progs.csv"
 [ -z ${aurhelper+x} ] && aurhelper="yay"
 
 ###
