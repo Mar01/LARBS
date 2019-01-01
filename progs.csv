@@ -2,3 +2,8 @@
 ,gvim,"provides a build of vim with the ability to copy and paste between other programs."
 ,networkmanager,"does exactly what it sounds like."
 ,highlight,"can highlight code output."
+,xorg-server,"is the graphical server."
+,xorg-xinit,"starts the graphical server."
+,i3-gaps,"is the main graphical user interface and window manager."
+,ttf-hack,"is my favorite mono font."
+,ttf-linux-libertine,"provides sans and serif fonts"
