@@ -1,72 +1,83 @@
 #!/bin/sh
 
+# vim:set tabstop=4
+
 # Set clock
 
 timedatectl set-ntp true
 
-# Encryption password
-
-echo -e "\n Enter encryption password:\n"
-read -s ep1
-echo -e "\n Reenter password:\n"
-read -s ep2
-while ! [[ ${ep1} != "" && ${ep1} == ${ep2} ]]; do
-	echo -e "\n Error. Enter password:\n"
+encpwd() { # Encryption password
+	echo -e "\n Enter encryption password:\n"
 	read -s ep1
 	echo -e "\n Reenter password:\n"
 	read -s ep2
-done
+	while [[ ${ep1} = "" || ${ep1} != ${ep2} ]]; do
+		echo -e "\n Error. Enter password:\n"
+		read -s ep1
+		echo -e "\n Reenter password:\n"
+		read -s ep2; done ;}
 
-# The big question
+encpwd
 
-echo -e "\n ===="
-echo -e " Are you SURE you wish to continue?"
-echo -e " ====\n"
-read -s -n 1 -p "(y/N): " choice
-case "$choice" in
-	y|Y ) echo -e "\n";;
-	* ) echo "Operation canceled by user." && exit 0;;
-esac
+bigq() { # The big question
+	echo -e "\n ===="
+	echo -e " Are you SURE you wish to continue?"
+	echo -e " ====\n"
+	read -s -n 1 -p "(y/N): " choice
+	case "$choice" in
+		y|Y ) echo -e "\n";;
+		* ) echo "Operation canceled by user." && exit 0;; esac ;}
 
+bigq
 
-# Partitioning
+partit() { # Partitioning
+	parted -s /dev/sda mklabel gpt mkpart primary 1MiB 36MiB set 1 esp on \
+	mkpart primary 36MiB 135MiB mkpart primary 135MiB 100%FREE ;}
 
-parted -s /dev/sda mklabel gpt mkpart primary 1MiB 36MiB set 1 esp on mkpart primary 36MiB 135MiB mkpart primary 135MiB 100%FREE
+partit
 
-# Encryption
+encit() { # Encryption
+	echo -n $ep1 | cryptsetup luksFormat /dev/sda2 -
+	echo -n $ep1 | cryptsetup luksFormat /dev/sda3 -
+	echo -n $ep1 | cryptsetup open /dev/sda2 luks-boot -
+	echo -n $ep1 | cryptsetup open /dev/sda3 luks-lvm - ;}
 
-echo -n $ep1 | cryptsetup luksFormat /dev/sda2 -
-echo -n $ep1 | cryptsetup luksFormat /dev/sda3 -
-echo -n $ep1 | cryptsetup open /dev/sda2 luks-boot -
-echo -n $ep1 | cryptsetup open /dev/sda3 luks-lvm -
+encit
 
-# Volumes
+volit() { # Volumes
+	pvcreate /dev/mapper/luks-lvm
+	vgcreate vg1 /dev/mapper/luks-lvm
+	lvcreate -L 20GB vg1 -n root
+	lvcreate -L 4.5GB vg1 -n swap
+	lvcreate -l 100%FREE vg1 -n home ;}
 
-pvcreate /dev/mapper/luks-lvm
-vgcreate vg1 /dev/mapper/luks-lvm
-lvcreate -L 20GB vg1 -n root
-lvcreate -L 4.5GB vg1 -n swap
-lvcreate -l 100%FREE vg1 -n home
+volit
 
-# Format
+fmatit() { # Format
+	mkfs.fat -F32 /dev/sda1
+	mkfs.ext2 /dev/mapper/luks-boot
+	mkfs.ext4 /dev/vg1/root
+	mkfs.ext4 /dev/vg1/home
+	mkswap /dev/vg1/swap ;}
 
-mkfs.fat -F32 /dev/sda1
-mkfs.ext2 /dev/mapper/luks-boot
-mkfs.ext4 /dev/vg1/root
-mkfs.ext4 /dev/vg1/home
-mkswap /dev/vg1/swap
+fmatit
 
-# Mount
+mntit() { # Mount
+	mount /dev/vg1/root /mnt
+	mkdir /mnt/boot && mount /dev/mapper/luks-boot /mnt/boot
+	mkdir /mnt/boot/efi && mount /dev/sda1 /mnt/boot/efi
+	mkdir /mnt/home && mount /dev/vg1/home /mnt/home
+	swapon /dev/vg1/swap ;}
 
-mount /dev/vg1/root /mnt
-mkdir /mnt/boot && mount /dev/mapper/luks-boot /mnt/boot
-mkdir /mnt/boot/efi && mount /dev/sda1 /mnt/boot/efi
-mkdir /mnt/home && mount /dev/vg1/home /mnt/home
-swapon /dev/vg1/swap
+mntit
 
-# Set my fav options for pacman via sed fin' magic
+sedpac() { # Set my fav options for pacman via sed fin' magic
+	_SEDP=\
+	':a;N;$!ba;s/#Color\n#TotalDownload/Color\nTotalDownload\nILoveCandy/g'
+	sed -i "_SEDP" /etc/pacman.conf ;}
+#sed -i ':a;N;$!ba;s/#Color\n#TotalDownload/Color\nTotalDownload\nILoveCandy/g' /etc/pacman.conf
 
-sed -i ':a;N;$!ba;s/#Color\n#TotalDownload/Color\nTotalDownload\nILoveCandy/g' /etc/pacman.conf
+sedpac
 
 # Pacstrap
 
@@ -76,12 +87,13 @@ pacstrap /mnt base base-devel vim networkmanager grub efibootmgr
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Create keyfile and add it
+encfile() { # Create keyfile and add it
+	dd bs=512 count=8 if=/dev/urandom of=/mnt/keyfile
+	chmod 600 /mnt/keyfile
+	echo -n $ep1 | cryptsetup luksAddKey /dev/sda2 /mnt/keyfile -
+	echo -n $ep1 | cryptsetup luksAddKey /dev/sda3 /mnt/keyfile - ;}
 
-dd bs=512 count=8 if=/dev/urandom of=/mnt/keyfile
-chmod 600 /mnt/keyfile
-echo -n $ep1 | cryptsetup luksAddKey /dev/sda2 /mnt/keyfile -
-echo -n $ep1 | cryptsetup luksAddKey /dev/sda3 /mnt/keyfile -
+encfile
 
 # /etc/crypttab
 
