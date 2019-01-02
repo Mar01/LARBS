@@ -23,7 +23,7 @@ echo -e "\n ===="
 echo -e " Are you SURE you wish to continue?"
 echo -e " ====\n"
 read -s -n 1 -p "(y/N): " choice
-case "$choice" in 
+case "$choice" in
 	y|Y ) echo -e "\n";;
 	* ) echo "Operation canceled by user." && exit 0;;
 esac
@@ -158,11 +158,11 @@ mount --bind /run /mnt/hostrun
 	# Chroot
 
 	arch-chroot /mnt /chroot.sh
-	rm /mnt/chroot.sh
-
 	# Continues in chroot.sh
 
-# upon return from chroot.sh, undo lvm bork workaround
+# upon return from chroot.sh, clean up and undo lvm bork workaround
+
+rm /mnt/chroot.sh
 
 umount /mnt/hostrun
 rm -r /mnt/hostrun
