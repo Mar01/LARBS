@@ -1,6 +1,5 @@
 #TAG,NAME IN REPO (or git url),PURPOSE (should be a verb phrase to sound right while installing)
 ,gvim,"provides a build of vim with the ability to copy and paste between other programs."
-,networkmanager,"does exactly what it sounds like."
 ,highlight,"can highlight code output."
 ,xorg-server,"is the graphical server."
 ,xorg-xinit,"starts the graphical server."
@@ -11,3 +10,4 @@
 ,feh,"is a minimalist image viewer."
 ,compton,"is for window transparency and blur"
 ,unclutter,"hides an inactive mouse."
+,dunst,"is a suckless notification system."
