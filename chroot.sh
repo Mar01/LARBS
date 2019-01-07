@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# Set timezone
+
+ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+
+# Run hwclock(8) to generate /etc/adjtime
+
+hwclock --systohc
+
+# Set locale
+
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+# Network
+
+echo mar-arch-vm > /etc/hostname
+echo -e "127.0.1.1\tmar-arch-vm.localdomain\tmar-arch-vm" >> /etc/hosts
+
+# Make initial RAM disk
+
+mkinitcpio -p linux
+
+# Activate grub
+
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
+
+  # lvm bork workaround continues
+  mkdir /run/lvm
+  mount --bind /hostrun/lvm /run/lvm
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+  # undo bork workaround
+  umount /run/lvm
+  rm -r /run/lvm
+
+# For VirtualBox
+
+echo '\EFI\grub\grubx64.efi' > /boot/efi/startup.nsh
+
+# done
+
+exit 0
