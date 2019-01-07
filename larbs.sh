@@ -19,7 +19,7 @@ esac done
 
 # DEFAULTS:
 # gotta make me rice repo
-#[ -z ${dotfilesrepo+x} ] && dotfilesrepo="https://github.com/lukesmithxyz/voidrice.git"
+[ -z ${dotfilesrepo+x} ] && dotfilesrepo="https://github.com/Mar01/rice.git"
 [ -z ${progsfile+x} ] && progsfile="https://raw.githubusercontent.com/Mar01/MARBS/master/progs.csv"
 [ -z ${aurhelper+x} ] && aurhelper="yay"
 
