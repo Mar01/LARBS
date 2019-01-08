@@ -6,23 +6,14 @@
 DLCHROOT() { # download chroot script
 _PLACE="https://raw.githubusercontent.com/Mar01/marbs/organize/chroot.sh"
 curl -s $_PLACE > ~/chroot.sh &&
-unset _PLACE ||
-echo "Can't get chroot file" &&
-exit 1 ;}
+[ $? != 0 ] && echo "Can't get chroot file" && exit 1
+unset _PLACE ;}
 
 DLLARBS() { # download LARBS script
 _PLACE="https://raw.githubusercontent.com/Mar01/marbs/organize/larbs.sh"
 curl -s $_PLACE > ~/larbs.sh &&
-unset _PLACE ||
-echo "Can't get larbs file" &&
-exit 2 ;}
-
-DLPROGS() { # download progs.csv
-_PLACE="https://raw.githubusercontent.com/Mar01/marbs/organize/progs.csv"
-curl -s $_PLACE > ~/progs.csv &&
-unset _PLACE ||
-echo "Can't get progs file" &&
-exit 3 ;}
+[ $? != 0 ] && echo "Can't get larbs file" && exit 2
+unset _PLACE ;}
 
 ENCPWD() { # Encryption password
 echo -e "\n Enter encryption password:\n"
@@ -75,7 +66,7 @@ swapon /dev/vg1/swap ;}
 
 SEDPAC() { # Set my fav options for pacman via sed fin' magic
 _SEDP=':a;N;$!ba;s/#Color\n#TotalDownload/Color\nTotalDownload\nILoveCandy/g'
-sed -i "_SEDP" /etc/pacman.conf
+sed -i "$_SEDP" /etc/pacman.conf
 unset _SEDP ;}
 
 ENCFILE() { # Create keyfile and add it
@@ -100,8 +91,6 @@ sed -i 's/^HOOKS.*$/HOOKS=(base udev autodetect keyboard modconf block encrypt l
 DLCHROOT
 
 DLLARBS
-
-DLPROGS
 
 # Set clock
 timedatectl set-ntp true
@@ -149,6 +138,7 @@ mount --bind /run /mnt/hostrun
 
 	# Chroot
 	cp ~/chroot.sh /mnt/chroot.sh
+	chmod +x /mnt/chroot.sh
 	arch-chroot /mnt /chroot.sh
 	# Continues in chroot.sh
 
@@ -159,8 +149,7 @@ rm /mnt/chroot.sh
 umount /mnt/hostrun
 rm -r /mnt/hostrun
 
-cp ~/larbs.sh /mnt/root/
-cp ~/progs.csv /mnt/root/
+cp ~/larbs.sh /mnt/root/larbs.sh
 
 echo -e "\n Done. LARBS is ready to run after reboot.\n"
 
