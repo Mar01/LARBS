@@ -15,3 +15,4 @@
 ,xorg-server,"is the graphical server."
 ,xorg-xinit,"starts the graphical server."
 ,xorg-xset,"can set x preferences like autorepeat rate."
+G,https://github.com/Mar01/st.git,"is my custom build of the suckless terminal emulator."
