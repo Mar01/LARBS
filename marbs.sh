@@ -112,7 +112,7 @@ MNTIT
 SEDPAC
 
 # Pacstrap
-pacstrap /mnt base base-devel vim networkmanager grub efibootmgr
+pacstrap /mnt base base-devel networkmanager grub efibootmgr
 
 # Generate File System Tab
 genfstab -U /mnt >> /mnt/etc/fstab

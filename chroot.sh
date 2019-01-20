@@ -18,6 +18,7 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 echo mar-arch-vm > /etc/hostname
 echo -e "127.0.1.1\tmar-arch-vm.localdomain\tmar-arch-vm" >> /etc/hosts
+systemctl enable NetworkManager
 
 # Make initial RAM disk
 
