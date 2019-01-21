@@ -15,4 +15,6 @@
 ,xorg-server,"is the graphical server."
 ,xorg-xinit,"starts the graphical server."
 ,xorg-xset,"can set x preferences like autorepeat rate."
+A,ttf-emojione,"is a package that gives the system unicode symbols and emojis used in the status bar and elsewhere."
+A,ttf-symbola,"provides unicode and emoji symbols."
 G,https://github.com/Mar01/st.git,"is my custom build of the suckless terminal emulator."
