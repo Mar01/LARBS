@@ -13,3 +13,4 @@
 ,xcompmgr,"for transparency and removing screen-tearing."
 ,unclutter,"hides an inactive mouse."
 ,dunst,"is a suckless notification system."
+,shellcheck,"checks for script compatibility."
