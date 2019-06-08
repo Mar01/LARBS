@@ -71,7 +71,7 @@ MNTIT
 
 SEDPAC() { # Set my fav options for pacman via sed fin' magic
 _SEDP=':a;N;$!ba;s/#Color\n#TotalDownload/Color\nTotalDownload\nILoveCandy/g'
-sed -i "_SEDP" /etc/pacman.conf ;}
+sed -i "$_SEDP" /etc/pacman.conf ;}
 
 SEDPAC
 
@@ -111,7 +111,7 @@ sed -i 's/#GRUB_HIDDEN_TIMEOUT_QUIET=.*$/GRUB_HIDDEN_TIMEOUT_QUIET=true/' /mnt/e
 
 # download chroot script
 
-curl -s https://raw.githubusercontent.com/Mar01/master/chroot.sh > ~/chroot.sh
+curl -s https://raw.githubusercontent.com/Mar01/MARBS/master/chroot.sh > ~/chroot.sh
 
 # an update to lvm borked grub-mkconfig: https://bbs.archlinux.org/viewtopic.php?id=242594
 
