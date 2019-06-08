@@ -120,6 +120,7 @@ mount --bind /run /mnt/hostrun
 
 	# Chroot
 	cp ~/chroot.sh /mnt/chroot.sh
+	chmod +x /mnt/chroot.sh
 	arch-chroot /mnt /chroot.sh
 	# Continues in chroot.sh
 
