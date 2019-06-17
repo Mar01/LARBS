@@ -35,8 +35,8 @@ mkpart primary 36MiB 135MiB mkpart primary 135MiB 100%FREE ;}
 PARTIT
 
 ENCIT() { # Encryption
-echo -n $ep1 | cryptsetup luksFormat /dev/sda2 -
-echo -n $ep1 | cryptsetup luksFormat /dev/sda3 -
+echo -n $ep1 | cryptsetup luksFormat --type luks1 /dev/sda2 -
+echo -n $ep1 | cryptsetup luksFormat --type luks1 /dev/sda3 -
 echo -n $ep1 | cryptsetup open /dev/sda2 luks-boot -
 echo -n $ep1 | cryptsetup open /dev/sda3 luks-lvm - ;}
 
@@ -102,7 +102,7 @@ sed -i 's/^HOOKS.*$/HOOKS=(base udev autodetect keyboard modconf block encrypt l
 
 # Even more gorram sed fin' magic for /etc/default/grub
 
-sed -i 's/^GRUB_TIMEOUT=/#GRUB_TIMEOUT/g' /mnt/etc/default/grub
+sed -i 's/^GRUB_TIMEOUT=/#GRUB_TIMEOUT=/g' /mnt/etc/default/grub
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT=""/' /mnt/etc/default/grub
 sed -i "s/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value \/dev\/sda3):luks-lvm cryptkey=rootfs:\/keyfile root=\/dev\/vg1\/root resume=UUID=$(blkid -s UUID -o value \/dev\/vg1\/swap)\"/" /mnt/etc/default/grub
 sed -i 's/^#GRUB_ENABLE_CRYPTODISK=.*$/GRUB_ENABLE_CRYPTODISK=y/' /mnt/etc/default/grub
