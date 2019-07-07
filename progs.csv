@@ -14,4 +14,5 @@
 ,unclutter,"hides an inactive mouse."
 ,dunst,"is a suckless notification system."
 ,shellcheck,"checks for script compatibility."
-,sxhkd,"is for universal keybinding"
+,sxhkd,"is for universal keybinding in X"
+A,lf,"is an extensive terminal file manager that everyone likes."
