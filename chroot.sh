@@ -27,15 +27,15 @@ mkinitcpio -p linux
 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
 
-  # lvm bork workaround continues
-  mkdir /run/lvm
-  mount --bind /hostrun/lvm /run/lvm
+  # lvm bork workaround continues (no longer needed)
+  #mkdir /run/lvm
+  #mount --bind /hostrun/lvm /run/lvm
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
   # undo bork workaround
-  umount /run/lvm
-  rm -r /run/lvm
+  #umount /run/lvm
+  #rm -r /run/lvm
 
 # For VirtualBox
 
