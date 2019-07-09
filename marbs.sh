@@ -102,24 +102,26 @@ sed -i 's/^HOOKS.*$/HOOKS=(base udev autodetect keyboard modconf block encrypt l
 
 # Even more gorram sed fin' magic for /etc/default/grub
 
-sed -i 's/^GRUB_TIMEOUT=/#GRUB_TIMEOUT=/g' /mnt/etc/default/grub
-sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT=""/' /mnt/etc/default/grub
+sed -i 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=1/g' /mnt/etc/default/grub
+sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT="" # use `quiet` to hide boot mesages/' /mnt/etc/default/grub
 sed -i "s/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value \/dev\/sda3):luks-lvm cryptkey=rootfs:\/keyfile root=\/dev\/vg1\/root resume=UUID=$(blkid -s UUID -o value \/dev\/vg1\/swap)\"/" /mnt/etc/default/grub
 sed -i 's/^#GRUB_ENABLE_CRYPTODISK=.*$/GRUB_ENABLE_CRYPTODISK=y/' /mnt/etc/default/grub
-sed -i 's/^#GRUB_HIDDEN_TIMEOUT=.*$/GRUB_HIDDEN_TIMEOUT=1/' /mnt/etc/default/grub
-sed -i 's/#GRUB_HIDDEN_TIMEOUT_QUIET=.*$/GRUB_HIDDEN_TIMEOUT_QUIET=true/' /mnt/etc/default/grub
+sed -i 's/^GRUB_TIMEOUT_STYLE=hidden/' /mnt/etc/default/grub
+# Old options; replaced with GRUB_TIMEOUT_STYLE and uses GRUB_TIMEOUT
+#sed -i 's/^#GRUB_HIDDEN_TIMEOUT=.*$/GRUB_HIDDEN_TIMEOUT=1/' /mnt/etc/default/grub
+#sed -i 's/#GRUB_HIDDEN_TIMEOUT_QUIET=.*$/GRUB_HIDDEN_TIMEOUT_QUIET=true/' /mnt/etc/default/grub
 
 # download chroot script
 
-curl -s https://raw.githubusercontent.com/Mar01/MARBS/master/chroot.sh > ~/chroot.sh
+curl -s https://raw.githubusercontent.com/Mar01/MARBS/master/chroot.sh > chroot.sh
 
 # an update to lvm borked grub-mkconfig: https://bbs.archlinux.org/viewtopic.php?id=242594
-
-mkdir /mnt/hostrun
-mount --bind /run /mnt/hostrun
+# which has apparently since been fixed, bork workaround not needed
+#mkdir /mnt/hostrun
+#mount --bind /run /mnt/hostrun
 
 	# Chroot
-	cp ~/chroot.sh /mnt/chroot.sh
+	cp chroot.sh /mnt/chroot.sh
 	chmod +x /mnt/chroot.sh
 	arch-chroot /mnt /chroot.sh
 	# Continues in chroot.sh
@@ -128,8 +130,8 @@ mount --bind /run /mnt/hostrun
 
 rm /mnt/chroot.sh
 
-umount /mnt/hostrun
-rm -r /mnt/hostrun
+#umount /mnt/hostrun
+#rm -r /mnt/hostrun
 
 #---END CORE---#
 
