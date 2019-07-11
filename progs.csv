@@ -16,3 +16,6 @@
 ,shellcheck,"checks for script compatibility."
 ,sxhkd,"is for universal keybinding in X"
 A,lf,"is an extensive terminal file manager that everyone likes."
+,figlet,"is a text art generator for luls"
+,neofetch,"prints a pretty system info message"
+,cmatrix,"is for completely nerding out"
