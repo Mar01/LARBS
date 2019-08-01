@@ -76,7 +76,7 @@ SEDPAC
 
 # Pacstrap
 
-pacstrap -c /mnt base base-devel vim networkmanager grub efibootmgr
+pacstrap -c /mnt base base-devel neovim networkmanager grub efibootmgr
 
 # Generate File System Tab
 
