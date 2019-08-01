@@ -1,22 +1,41 @@
 #TAG,NAME IN REPO (or git url),PURPOSE (should be a verb phrase to sound right while installing)
-,gvim,"provides a build of vim with the ability to copy and paste between other programs."
 ,highlight,"can highlight code output."
-,xorg-server,"is the graphical server."
-,xorg-xinit,"starts the graphical server."
-,xorg-xset,"sets x preferences like autorepeat rate."
-,xcape,"gives the special escape/super mappings of LARBS."
-,arandr,"is a UI for screen adjustment."
-,i3-gaps,"is the main graphical user interface and window manager."
-,ttf-hack,"is my favorite mono font."
-,ttf-linux-libertine,"provides sans and serif fonts."
-,feh,"is a minimalist image viewer."
-,xcompmgr,"for transparency and removing screen-tearing."
-,unclutter,"hides an inactive mouse."
-,dunst,"is a suckless notification system."
 ,shellcheck,"checks for script compatibility."
-,sxhkd,"is for universal keybinding in X."
-A,lf,"is an extensive terminal file manager that everyone likes."
 ,figlet,"is a text art generator for luls."
 ,neofetch,"prints a pretty system info message."
 ,cmatrix,"is for completely nerding out."
 ,fzf,"is a fuzzy finder tool."
+
+,pulseaudio,"is the audio system (>inb4 bloat) (i'm totally ripping off Luke's comments."
+,pulseaudio-alsa,"is an audio interface with ALSA."
+,pulsemixer,"is an intuitive ncurses audio controller."
+,mpd,"is a lightweight music daemon."
+,mpc,"is a terminal interface for mpd."
+,ncmpcpp,"is an ncurses interface for music with multiple formats and a powerful tag editor."
+
+,reflector,"can update pacman's mirrorlist with specific options."
+
+,neovim,"is a tidier vim with some useful features."
+
+# stuff used in X starts here
+,xorg-server,"is the graphical server."
+,xorg-xinit,"starts the graphical server."
+,xorg-xset,"sets x preferences like autorepeat rate."
+,xcape,"gives the special escape/super mappings of MARBS."
+,ttf-hack,"is my favorite mono font."
+,ttf-linux-libertine,"provides sans and serif fonts."
+,arandr,"is a UI for screen adjustment."
+
+# hopefully will soon be replaced with dwm
+,i3-gaps,"is the main graphical user interface and window manager."
+
+,feh,"is a minimalist image viewer."
+,xcompmgr,"for transparency and removing screen-tearing."
+,unclutter,"hides an inactive mouse."
+,dunst,"is a suckless notification system."
+,sxhkd,"is for universal keybinding in X."
+
+# for the pauseallmpv script
+,socat,"is a socket utility."
+
+A,lf,"is an extensive terminal file manager that everyone likes."

@@ -1,5 +1,4 @@
 #!/bin/sh
-# vim:set tabstop=4
 
 #--BEGIN CORE--#
 # Set clock
