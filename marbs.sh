@@ -103,7 +103,7 @@ sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=hidden/' /mnt/etc/default/g
 #sed -i 's/#GRUB_HIDDEN_TIMEOUT_QUIET=.*$/GRUB_HIDDEN_TIMEOUT_QUIET=true/' /mnt/etc/default/grub
 
 DLCHROOT(){# Download chroot script
-curl -s https://raw.githubusercontent.com/Mar01/MARBS/master/chroot.sh > chroot.sh
+curl  https://raw.githubusercontent.com/Mar01/MARBS/master/chroot.sh > chroot.sh
 cp chroot.sh /mnt/chroot.sh
 chmod +x /mnt/chroot.sh ;}
 
@@ -112,6 +112,10 @@ arch-chroot /mnt /chroot.sh ;}
 
 RMCHROOT(){# Remove chroot script
 rm /mnt/chroot.sh ;}
+
+GETLARBS(){ # Download my version of Luke's script
+curl  https://raw.githubusercontent.com/Mar01/MARBS/master/larbs.sh > /mnt/root/larbs.sh
+chmod +x /mnt/root/larbs.sh ;}
 
 #---END CORE---#
 
@@ -157,3 +161,5 @@ CHROOT || error "CHROOT"
 # Continues in chroot.sh
 
 RMCHROOT || error "RMCHROOT"
+
+GETLARBS || error "GERLARBS"
