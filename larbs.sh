@@ -65,8 +65,10 @@ refreshkeys() { \
 	}
 
 newperms() { # Set special sudoers settings for install (or after).
-	sed -i "/#LARBS/d" /etc/sudoers
-	echo "$* #LARBS" >> /etc/sudoers ;}
+#	sed -i "/#LARBS/d" /etc/sudoers
+#	echo "$* #LARBS" >> /etc/sudoers ;}
+	echo "$*" > /etc/sudoers.d/larbs
+	chmod 440 /etc/sudoers.d/larbs ;}
 
 manualinstall() { # Installs $1 manually if not installed. Used only for AUR helper here.
 	[ -f "/usr/bin/$1" ] || (
