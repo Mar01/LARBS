@@ -1,11 +1,19 @@
 #TAG,NAME IN REPO (or git url),PURPOSE (should be a verb phrase to sound right while installing)
+
+# core
+,reflector,"can update pacman's mirrorlist with specific options."
 ,highlight,"can highlight code output."
 ,shellcheck,"checks for script compatibility."
+,fzf,"is a fuzzy finder tool."
+,neovim,"is a tidier vim with some useful features."
+A,lf,"is an extensive terminal file manager that everyone likes."
+
+# fun stuff
 ,figlet,"is a text art generator for luls."
 ,neofetch,"prints a pretty system info message."
 ,cmatrix,"is for completely nerding out."
-,fzf,"is a fuzzy finder tool."
 
+# sound
 ,pulseaudio,"is the audio system (>inb4 bloat) (i'm totally ripping off Luke's comments."
 ,pulseaudio-alsa,"is an audio interface with ALSA."
 ,pulsemixer,"is an intuitive ncurses audio controller."
@@ -13,29 +21,28 @@
 ,mpc,"is a terminal interface for mpd."
 ,ncmpcpp,"is an ncurses interface for music with multiple formats and a powerful tag editor."
 
-,reflector,"can update pacman's mirrorlist with specific options."
-
-,neovim,"is a tidier vim with some useful features."
-
-# stuff used in X starts here
-,xorg-server,"is the graphical server."
-,xorg-xinit,"starts the graphical server."
-,xorg-xset,"sets x preferences like autorepeat rate."
-,xcape,"gives the special escape/super mappings of MARBS."
-,ttf-hack,"is my favorite mono font."
-,ttf-linux-libertine,"provides sans and serif fonts."
-,arandr,"is a UI for screen adjustment."
-
-# hopefully will soon be replaced with dwm
-,i3-gaps,"is the main graphical user interface and window manager."
-
-,feh,"is a minimalist image viewer."
-,xcompmgr,"for transparency and removing screen-tearing."
-,unclutter,"hides an inactive mouse."
-,dunst,"is a suckless notification system."
-,sxhkd,"is for universal keybinding in X."
-
-# for the pauseallmpv script
-,socat,"is a socket utility."
-
-A,lf,"is an extensive terminal file manager that everyone likes."
+## stuff used in X starts here
+#
+## x core
+#,xorg-server,"is the graphical server."
+#,xorg-xinit,"starts the graphical server."
+#,xorg-xset,"sets x preferences like autorepeat rate."
+#,xcompmgr,"for transparency and removing screen-tearing."
+#,xcape,"gives the special escape/super mappings of MARBS."
+#,arandr,"is a UI for screen adjustment."
+#,sxhkd,"is for universal keybinding in X."
+#
+## hopefully will soon be replaced with dwm
+#,i3-gaps,"is the main graphical user interface and window manager."
+#
+## font stuff
+#,ttf-hack,"is my favorite mono font."
+#,ttf-linux-libertine,"provides sans and serif fonts."
+#
+#,feh,"is a minimalist image viewer."
+#,unclutter,"hides an inactive mouse."
+#,dunst,"is a suckless notification system."
+#
+## for the pauseallmpv script
+#,socat,"is a socket utility."
+#
