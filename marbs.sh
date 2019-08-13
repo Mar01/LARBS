@@ -162,4 +162,4 @@ CHROOT || error "CHROOT"
 
 RMCHROOT || error "RMCHROOT"
 
-GETLARBS || error "GERLARBS"
+GETLARBS || error "GETLARBS"
