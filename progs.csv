@@ -32,6 +32,7 @@ A,lf,"is an extensive terminal file manager that everyone likes."
 #,xcape,"gives the special escape/super mappings of MARBS."
 #,arandr,"is a UI for screen adjustment."
 #,sxhkd,"is for universal keybinding in X."
+#,xcape,"gives the special escape/super mappings of MARBS."
 #
 ## hopefully will soon be replaced with dwm
 #,i3-gaps,"is the main graphical user interface and window manager."
