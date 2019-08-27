@@ -4,6 +4,7 @@
 ,reflector,"can update pacman's mirrorlist with specific options."
 ,highlight,"can highlight code output."
 ,shellcheck,"checks for script compatibility."
+,acpi,"reads battery and temperature status."
 ,fzf,"is a fuzzy finder tool."
 ,neovim,"is a tidier vim with some useful features."
 ,openssh,"is secure shell"
