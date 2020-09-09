@@ -1,0 +1,2 @@
+# for gpg to read yubikey
+libusb-compat

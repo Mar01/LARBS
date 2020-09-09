@@ -9,10 +9,11 @@ error()
 	clear; printf "ERROR:\\n%s\\n" "$1"; exit
 }
 
-TIME()
-{ # Set clock
-	timedatectl set-ntp true
-}
+# Arch
+#TIME()
+#{ # Set clock
+#	timedatectl set-ntp true
+#}
 
 ENCPWD()
 { # Encryption password
@@ -52,20 +53,26 @@ REFKEYS()
 	pacman --noconfirm -Sy archlinux-keyring
 }
 
-REFLECTOR()
-{ # Use reflector to optimize mirrorlist
-	pacman --noconfirm -S reflector
-	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-	printf "\n Mirrorlist backed up\n\n"
-	reflector --verbose --country "United States" --protocol https \
-	--latest 10 --sort rate --save /etc/pacman.d/mirrorlist
-	printf "\n Mirrorlist updated\n\n"
-}
+# Won't work for Artix
+#REFLECTOR()
+#{ # Use reflector to optimize mirrorlist
+#	pacman --noconfirm -S reflector
+#	cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+#	printf "\n Mirrorlist backed up\n\n"
+#	reflector --verbose --country "United States" --protocol https \
+#	--latest 10 --sort rate --save /etc/pacman.d/mirrorlist
+#	printf "\n Mirrorlist updated\n\n"
+#}
 
 #PARTIT()
 #{ # Partitioning
 #	parted -s /dev/sda mklabel gpt mkpart primary 1MiB 36MiB set 1 esp on \
 #	mkpart primary 36MiB 135MiB mkpart primary 135MiB 100%FREE
+#}
+
+#PARTIT()
+#{ # Partitioning
+#	printf "g\nn\n\n\n+35M\nt\n1\nn\n\n\n\nw\n" | fdisk /dev/sda
 #}
 
 PARTIT()
@@ -110,12 +117,14 @@ MNTIT()
 
 PACSTRAP()
 {
-	pacstrap -c /mnt base base-devel linux neovim networkmanager grub #efibootmgr
+#	pacstrap -c /mnt base base-devel linux lvm2 neovim networkmanager grub efibootmgr
+	basestrap /mnt base base-devel intel-ucode linux cryptsetup-runit device-mapper-runit lvm2-runit grub runit elogind-runit networkmanager-runit neovim
 }
 
 GFSTAB()
 { # Generate File System Tab
-	genfstab -U /mnt >> /mnt/etc/fstab
+#	genfstab -U /mnt >> /mnt/etc/fstab
+	fstabgen -U /mnt >> /mnt/etc/fstab
 }
 
 ENCFILE()
@@ -142,7 +151,7 @@ SEDGRUB()
 { # Even more gorram sed fin' magic for /etc/default/grub
 	sed -i 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=1/g' /mnt/etc/default/grub
 	sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT="" # use `quiet` to hide boot mesages/' /mnt/etc/default/grub
-	sed -i "s/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value \/dev\/sda3):luks-lvm cryptkey=rootfs:\/kf root=\/dev\/vg1\/root resume=UUID=$(blkid -s UUID -o value \/dev\/vg1\/swap)\"/" /mnt/etc/default/grub
+	sed -i "s/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value \/dev\/sda3):luks-lvm cryptkey=rootfs:\/keyfile root=\/dev\/vg1\/root resume=UUID=$(blkid -s UUID -o value \/dev\/vg1\/swap)\"/" /mnt/etc/default/grub
 	sed -i 's/^#GRUB_ENABLE_CRYPTODISK=.*$/GRUB_ENABLE_CRYPTODISK=y/' /mnt/etc/default/grub
 	sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=hidden/' /mnt/etc/default/grub
 }
@@ -177,7 +186,8 @@ GETLARBS()
 
 #---Script
 
-TIME || error "TIME"
+# Arch
+#TIME || error "TIME"
 
 ENCPWD || error "ENCPWD"
 
