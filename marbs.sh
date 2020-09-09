@@ -110,7 +110,7 @@ MNTIT()
 
 PACSTRAP()
 {
-	pacstrap /mnt base base-devel linux neovim networkmanager grub #efibootmgr
+	pacstrap /mnt base base-devel linux lvm2 neovim networkmanager grub #efibootmgr
 }
 
 GFSTAB()
