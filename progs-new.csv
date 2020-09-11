@@ -1,2 +1,29 @@
-# for gpg to read yubikey
-libusb-compat
+#TAG,NAME IN REPO (or git url),PURPOSE (should be a verb phrase to sound right while installing)
+
+# core,,
+,reflector,"can update pacman's mirrorlist with specific options."
+,highlight,"can highlight code output."
+,shellcheck,"checks for script compatibility."
+,acpi,"reads battery and temperature status."
+,fzf,"is a fuzzy finder tool."
+,neovim,"is a tidier vim with some useful features."
+,openssh,"is secure shell"
+,zsh,"is the 'zoomer' shell"
+,tmux,"is a terminal multiplexor"
+A,lf,"is an extensive terminal file manager that everyone likes."
+
+# fun stuff,,
+,figlet,"is a text art generator for luls."
+,neofetch,"prints a pretty system info message."
+,cmatrix,"is for completely nerding out."
+
+# sound,,
+,pulseaudio,"is the audio system (>inb4 bloat) (i'm totally ripping off Luke's comments)."
+,pulseaudio-alsa,"is an audio interface with ALSA."
+,pulsemixer,"is an intuitive ncurses audio controller."
+,mpd,"is a lightweight music daemon."
+,mpc,"is a terminal interface for mpd."
+,ncmpcpp,"is an ncurses interface for music with multiple formats and a powerful tag editor."
+
+# for gpg to read yubikey,,
+,libusb-compat,"is needed by gpg to use usb smart cards"
