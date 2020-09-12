@@ -77,13 +77,17 @@ PARTIT()
 	printf "o\nn\n\n\n\n\nw\n" | fdisk /dev/sda
 }
 
-ENCIT()
-{ # Encryption
+#ENCIT()
+#{ # Encryption
 #	echo -n $ep1 | cryptsetup luksFormat --type luks1 /dev/sda2 -
 #	echo -n $ep1 | cryptsetup luksFormat --type luks1 /dev/sda3 -
-	echo -n $ep1 | cryptsetup luksFormat --type luks1 /dev/sda1 -
 #	echo -n $ep1 | cryptsetup open /dev/sda2 luks-boot -
-	echo -n $ep1 | cryptsetup open /dev/sda3 luks-lvm -
+#	echo -n $ep1 | cryptsetup open /dev/sda3 luks-lvm -
+#}
+ENCIT()
+{ # Encryption
+	echo -n $ep1 | cryptsetup luksFormat --type luks1 /dev/sda1 -
+	echo -n $ep1 | cryptsetup open /dev/sda1 luks-lvm -
 }
 
 VOLIT()
@@ -95,20 +99,32 @@ VOLIT()
 	lvcreate -l 100%FREE vg1 -n home
 }
 
-FMATIT()
-{ # Format
+#FMATIT()
+#{ # Format
 #	mkfs.fat -F32 /dev/sda1
 #	mkfs.ext2 /dev/mapper/luks-boot
+#	mkfs.ext4 /dev/vg1/root
+#	mkfs.ext4 /dev/vg1/home
+#	mkswap /dev/vg1/swap
+#}
+FMATIT()
+{ # Format
 	mkfs.ext4 /dev/vg1/root
 	mkfs.ext4 /dev/vg1/home
 	mkswap /dev/vg1/swap
 }
 
+#MNTIT()
+#{ # Mount
+#	mount /dev/vg1/root /mnt
+#	mkdir /mnt/boot && mount /dev/mapper/luks-boot /mnt/boot
+#	mkdir /mnt/boot/efi && mount /dev/sda1 /mnt/boot/efi
+#	mkdir /mnt/home && mount /dev/vg1/home /mnt/home
+#	swapon /dev/vg1/swap
+#}
 MNTIT()
 { # Mount
 	mount /dev/vg1/root /mnt
-#	mkdir /mnt/boot && mount /dev/mapper/luks-boot /mnt/boot
-#	mkdir /mnt/boot/efi && mount /dev/sda1 /mnt/boot/efi
 	mkdir /mnt/home && mount /dev/vg1/home /mnt/home
 	swapon /dev/vg1/swap
 }
@@ -123,20 +139,25 @@ GFSTAB()
 	genfstab -U /mnt >> /mnt/etc/fstab
 }
 
+#ENCFILE()
+#{ # Create keyfile and add it
+#	dd bs=512 count=8 if=/dev/urandom of=/mnt/kf
+#	chmod 600 /mnt/kf
+#	echo -n $ep1 | cryptsetup luksAddKey /dev/sda2 /mnt/kf -
+#	echo -n $ep1 | cryptsetup luksAddKey /dev/sda3 /mnt/kf -
+#}
 ENCFILE()
 { # Create keyfile and add it
 	dd bs=512 count=8 if=/dev/urandom of=/mnt/kf
 	chmod 600 /mnt/kf
 	echo -n $ep1 | cryptsetup luksAddKey /dev/sda1 /mnt/kf -
-#	echo -n $ep1 | cryptsetup luksAddKey /dev/sda2 /mnt/kf -
-#	echo -n $ep1 | cryptsetup luksAddKey /dev/sda3 /mnt/kf -
 }
 
-#CRYPTTAB()
-#{ # /etc/crypttab
-#	echo -e "luks-boot\tUUID=$(blkid -s UUID -o value /dev/sda2)\t/kf" >> \
-#	/mnt/etc/crypttab
-#}
+CRYPTTAB()
+{ # /etc/crypttab
+	echo -e "luks-boot\tUUID=$(blkid -s UUID -o value /dev/sda2)\t/kf" >> \
+	/mnt/etc/crypttab
+}
 
 SEDCPIO()
 { # Fixin' up mkinitcpio.conf with more sed fin' magic
@@ -144,12 +165,19 @@ SEDCPIO()
 	sed -i 's/^HOOKS.*$/HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 resume filesystems fsck)/g' /mnt/etc/mkinitcpio.conf
 }
 
+#SEDGRUB()
+#{ # Even more gorram sed fin' magic for /etc/default/grub
+#	sed -i 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=1/g' /mnt/etc/default/grub
+#	sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT="" # use `quiet` to hide boot mesages/' /mnt/etc/default/grub
+#	sed -i "s/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value \/dev\/sda3):luks-lvm cryptkey=rootfs:\/kf root=\/dev\/vg1\/root resume=UUID=$(blkid -s UUID -o value \/dev\/vg1\/swap)\"/" /mnt/etc/default/grub
+#	sed -i 's/^#GRUB_ENABLE_CRYPTODISK=.*$/GRUB_ENABLE_CRYPTODISK=y/' /mnt/etc/default/grub
+#	sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=hidden/' /mnt/etc/default/grub
+#}
 SEDGRUB()
 { # Even more gorram sed fin' magic for /etc/default/grub
 	sed -i 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=1/g' /mnt/etc/default/grub
 	sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*$/GRUB_CMDLINE_LINUX_DEFAULT="" # use `quiet` to hide boot mesages/' /mnt/etc/default/grub
 	sed -i "s/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value \/dev\/sda1):luks-lvm cryptkey=rootfs:\/kf root=\/dev\/vg1\/root resume=UUID=$(blkid -s UUID -o value \/dev\/vg1\/swap)\"/" /mnt/etc/default/grub
-#	sed -i "s/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value \/dev\/sda3):luks-lvm cryptkey=rootfs:\/kf root=\/dev\/vg1\/root resume=UUID=$(blkid -s UUID -o value \/dev\/vg1\/swap)\"/" /mnt/etc/default/grub
 	sed -i 's/^#GRUB_ENABLE_CRYPTODISK=.*$/GRUB_ENABLE_CRYPTODISK=y/' /mnt/etc/default/grub
 	sed -i 's/^GRUB_TIMEOUT_STYLE=.*$/GRUB_TIMEOUT_STYLE=hidden/' /mnt/etc/default/grub
 }
